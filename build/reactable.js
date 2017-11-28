@@ -1093,9 +1093,17 @@ window.ReactDOM["default"] = window.ReactDOM;
                             return;
                         }
 
-                        switch (child.type) {
-                            case _thead.Thead:
-                                break;
+                        var reactableDescendant = undefined;
+                        var test = undefined;
+
+                        if ([_tfoot.Tfoot, _thead.Thead, _tr.Tr].indexOf(child.type) >= 0) {
+                            reactableDescendant = child;
+                        } else {
+                            reactableDescendant = new child.type(child.props, child._context).render();
+                            test = true;
+                        }
+
+                        switch (reactableDescendant.type) {
                             case _tfoot.Tfoot:
                                 if (typeof tfoot !== 'undefined') {
                                     console.warn('You can only have one <Tfoot>, but more than one was specified.' + 'Ignoring all but the last one');
@@ -1103,9 +1111,9 @@ window.ReactDOM["default"] = window.ReactDOM;
                                 tfoot = child;
                                 break;
                             case _tr.Tr:
-                                var childData = child.props.data || {};
+                                var childData = reactableDescendant.props.data || {};
 
-                                _react['default'].Children.forEach(child.props.children, function (descendant) {
+                                _react['default'].Children.forEach(reactableDescendant.props.children, function (descendant) {
                                     // TODO
                                     /* if (descendant.type.ConvenienceConstructor === Td) { */
                                     if (typeof descendant !== 'object' || descendant == null) {
@@ -1118,7 +1126,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                                         } else if (typeof descendant.props.children !== 'undefined') {
                                             value = descendant.props.children;
                                         } else {
-                                            console.warn('exports.Td specified without ' + 'a `data` property or children, ' + 'ignoring');
+                                            console.warn('Td specified without ' + 'a `data` property or children, ' + 'ignoring');
                                             return;
                                         }
 
@@ -1134,7 +1142,7 @@ window.ReactDOM["default"] = window.ReactDOM;
 
                                 data.push({
                                     data: childData,
-                                    props: (0, _libFilter_props_from.filterPropsFrom)(child.props),
+                                    props: (0, _libFilter_props_from.filterPropsFrom)(reactableDescendant.props),
                                     __reactableMeta: true
                                 });
                                 break;
