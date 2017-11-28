@@ -1,4 +1,5 @@
 window.React["default"] = window.React;
+window.ReactDOM["default"] = window.ReactDOM;
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
         define(["exports"], factory);
@@ -16,13 +17,31 @@ window.React["default"] = window.React;
 
     exports.filterPropsFrom = filterPropsFrom;
     var internalProps = {
+        hideTableHeader: true,
         column: true,
         columns: true,
         sortable: true,
         filterable: true,
+        filtering: true,
+        onFilter: true,
+        filterPlaceholder: true,
+        filterClassName: true,
+        currentFilter: true,
+        sort: true,
         sortBy: true,
+        sortableColumns: true,
+        onSort: true,
         defaultSort: true,
+        defaultSortDescending: true,
         itemsPerPage: true,
+        filterBy: true,
+        hideFilterInput: true,
+        noDataText: true,
+        currentPage: true,
+        onPageChange: true,
+        previousPageLabel: true,
+        nextPageLabel: true,
+        pageButtonLimit: true,
         childNode: true,
         data: true,
         children: true
@@ -199,27 +218,27 @@ window.React["default"] = window.React;
 });
 
 (function (global, factory) {
-    if (typeof define === "function" && define.amd) {
-        define(["exports", "react"], factory);
-    } else if (typeof exports !== "undefined") {
-        factory(exports, require("react"));
+    if (typeof define === 'function' && define.amd) {
+        define(['exports', 'react', 'react-dom'], factory);
+    } else if (typeof exports !== 'undefined') {
+        factory(exports, require('react'), require('react-dom'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.React);
+        factory(mod.exports, global.React, global.ReactDOM);
         global.filterer = mod.exports;
     }
-})(this, function (exports, _react) {
-    "use strict";
+})(this, function (exports, _react, _reactDom) {
+    'use strict';
 
-    var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+    var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-    function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+    function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
     var FiltererInput = (function (_React$Component) {
         _inherits(FiltererInput, _React$Component);
@@ -227,19 +246,19 @@ window.React["default"] = window.React;
         function FiltererInput() {
             _classCallCheck(this, FiltererInput);
 
-            _get(Object.getPrototypeOf(FiltererInput.prototype), "constructor", this).apply(this, arguments);
+            _get(Object.getPrototypeOf(FiltererInput.prototype), 'constructor', this).apply(this, arguments);
         }
 
         _createClass(FiltererInput, [{
-            key: "onChange",
+            key: 'onChange',
             value: function onChange() {
-                this.props.onFilter(_react["default"].findDOMNode(this).value);
+                this.props.onFilter(_reactDom['default'].findDOMNode(this).value);
             }
         }, {
-            key: "render",
+            key: 'render',
             value: function render() {
-                return _react["default"].createElement("input", { type: "text",
-                    className: "reactable-filter-input",
+                return _react['default'].createElement('input', { type: 'text',
+                    className: this.props.className,
                     placeholder: this.props.placeholder,
                     value: this.props.value,
                     onKeyUp: this.onChange.bind(this),
@@ -248,7 +267,7 @@ window.React["default"] = window.React;
         }]);
 
         return FiltererInput;
-    })(_react["default"].Component);
+    })(_react['default'].Component);
 
     exports.FiltererInput = FiltererInput;
     ;
@@ -259,32 +278,33 @@ window.React["default"] = window.React;
         function Filterer() {
             _classCallCheck(this, Filterer);
 
-            _get(Object.getPrototypeOf(Filterer.prototype), "constructor", this).apply(this, arguments);
+            _get(Object.getPrototypeOf(Filterer.prototype), 'constructor', this).apply(this, arguments);
         }
 
         _createClass(Filterer, [{
-            key: "render",
+            key: 'render',
             value: function render() {
                 if (typeof this.props.colSpan === 'undefined') {
                     throw new TypeError('Must pass a colSpan argument to Filterer');
                 }
 
-                return _react["default"].createElement(
-                    "tr",
-                    { className: "reactable-filterer" },
-                    _react["default"].createElement(
-                        "td",
+                return _react['default'].createElement(
+                    'tr',
+                    { className: 'reactable-filterer' },
+                    _react['default'].createElement(
+                        'td',
                         { colSpan: this.props.colSpan },
-                        _react["default"].createElement(FiltererInput, { onFilter: this.props.onFilter,
+                        _react['default'].createElement(FiltererInput, { onFilter: this.props.onFilter,
                             value: this.props.value,
-                            placeholder: this.props.placeholder })
+                            placeholder: this.props.placeholder,
+                            className: this.props.className ? 'reactable-filter-input ' + this.props.className : 'reactable-filter-input' })
                     )
                 );
             }
         }]);
 
         return Filterer;
-    })(_react["default"].Component);
+    })(_react['default'].Component);
 
     exports.Filterer = Filterer;
     ;
@@ -343,14 +363,8 @@ window.React["default"] = window.React;
 
         Currency: function Currency(a, b) {
             // Parse out dollar signs, then do a regular numeric sort
-            // TODO: handle non-American currency
-
-            if (a[0] === '$') {
-                a = a.substring(1);
-            }
-            if (b[0] === '$') {
-                b = b.substring(1);
-            }
+            a = a.replace(/[^0-9\.\-\,]+/g, '');
+            b = b.replace(/[^0-9\.\-\,]+/g, '');
 
             return exports.Sort.Numeric(a, b);
         },
@@ -397,22 +411,24 @@ window.React["default"] = window.React;
 
 (function (global, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['exports', 'react', './lib/is_react_component', './lib/stringable', './unsafe'], factory);
+        define(['exports', 'react', './lib/is_react_component', './lib/stringable', './unsafe', './lib/filter_props_from'], factory);
     } else if (typeof exports !== 'undefined') {
-        factory(exports, require('react'), require('./lib/is_react_component'), require('./lib/stringable'), require('./unsafe'));
+        factory(exports, require('react'), require('./lib/is_react_component'), require('./lib/stringable'), require('./unsafe'), require('./lib/filter_props_from'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.React, global.is_react_component, global.stringable, global.unsafe);
+        factory(mod.exports, global.React, global.is_react_component, global.stringable, global.unsafe, global.filter_props_from);
         global.td = mod.exports;
     }
-})(this, function (exports, _react, _libIs_react_component, _libStringable, _unsafe) {
+})(this, function (exports, _react, _libIs_react_component, _libStringable, _unsafe, _libFilter_props_from) {
     'use strict';
+
+    var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -428,46 +444,44 @@ window.React["default"] = window.React;
         }
 
         _createClass(Td, [{
-            key: 'handleClick',
-            value: function handleClick(e) {
-                if (typeof this.props.handleClick === 'function') {
-                    return this.props.handleClick(e, this);
+            key: 'stringifyIfNotReactComponent',
+            value: function stringifyIfNotReactComponent(object) {
+                if (!(0, _libIs_react_component.isReactComponent)(object) && (0, _libStringable.stringable)(object) && typeof object !== 'undefined') {
+                    return object.toString();
                 }
+                return null;
             }
         }, {
             key: 'render',
             value: function render() {
-                var tdProps = {
-                    className: this.props.className,
-                    onClick: this.handleClick.bind(this)
-                };
-
                 // Attach any properties on the column to this Td object to allow things like custom event handlers
+                var mergedProps = (0, _libFilter_props_from.filterPropsFrom)(this.props);
                 if (typeof this.props.column === 'object') {
                     for (var key in this.props.column) {
                         if (key !== 'key' && key !== 'name') {
-                            tdProps[key] = this.props.column[key];
+                            mergedProps[key] = this.props.column[key];
                         }
                     }
                 }
+                // handleClick aliases onClick event
+                mergedProps.onClick = this.props.handleClick;
 
-                var data = this.props.data;
+                var stringifiedChildProps;
 
-                if (typeof this.props.children !== 'undefined') {
-                    if ((0, _libIs_react_component.isReactComponent)(this.props.children)) {
-                        data = this.props.children;
-                    } else if (typeof this.props.data === 'undefined' && (0, _libStringable.stringable)(this.props.children)) {
-                        data = this.props.children.toString();
-                    }
-
-                    if ((0, _unsafe.isUnsafe)(this.props.children)) {
-                        tdProps.dangerouslySetInnerHTML = { __html: this.props.children.toString() };
-                    } else {
-                        tdProps.children = data;
-                    }
+                if (typeof this.props.data === 'undefined') {
+                    stringifiedChildProps = this.stringifyIfNotReactComponent(this.props.children);
                 }
 
-                return _react['default'].createElement('td', tdProps);
+                if ((0, _unsafe.isUnsafe)(this.props.children)) {
+                    return _react['default'].createElement('td', _extends({}, mergedProps, {
+                        dangerouslySetInnerHTML: { __html: this.props.children.toString() } }));
+                } else {
+                    return _react['default'].createElement(
+                        'td',
+                        mergedProps,
+                        stringifiedChildProps || this.props.children
+                    );
+                }
             }
         }]);
 
@@ -497,7 +511,9 @@ window.React["default"] = window.React;
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+    function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -522,10 +538,14 @@ window.React["default"] = window.React;
                         console.log(children);
                     }
 
-                    children = children.concat(this.props.columns.map((function (column, i) {
+                    children = children.concat(this.props.columns.map((function (_ref, i) {
+                        var _ref$props = _ref.props;
+                        var props = _ref$props === undefined ? {} : _ref$props;
+
+                        var column = _objectWithoutProperties(_ref, ['props']);
+
                         if (this.props.data.hasOwnProperty(column.key)) {
                             var value = this.props.data[column.key];
-                            var props = {};
 
                             if (typeof value !== 'undefined' && value !== null && value.__reactableMeta === true) {
                                 props = value.props;
@@ -579,7 +599,7 @@ window.React["default"] = window.React;
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -638,7 +658,7 @@ window.React["default"] = window.React;
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -659,6 +679,13 @@ window.React["default"] = window.React;
                 this.props.onSort(column.key);
             }
         }, {
+            key: 'handleKeyDownTh',
+            value: function handleKeyDownTh(column, event) {
+                if (event.keyCode === 13) {
+                    this.props.onSort(column.key);
+                }
+            }
+        }, {
             key: 'render',
             value: function render() {
                 // Declare the list of Ths
@@ -667,9 +694,11 @@ window.React["default"] = window.React;
                     var column = this.props.columns[index];
                     var thClass = 'reactable-th-' + column.key.replace(/\s+/g, '-').toLowerCase();
                     var sortClass = '';
+                    var thRole = null;
 
                     if (this.props.sortableColumns[column.key]) {
                         sortClass += 'reactable-header-sortable ';
+                        thRole = 'button';
                     }
 
                     if (this.props.sort.column === column.key) {
@@ -695,7 +724,8 @@ window.React["default"] = window.React;
                             className: thClass,
                             key: index,
                             onClick: this.handleClickTh.bind(this, column),
-                            role: 'button',
+                            onKeyDown: this.handleKeyDownTh.bind(this, column),
+                            role: thRole,
                             tabIndex: '0' }),
                         column.label
                     ));
@@ -711,7 +741,8 @@ window.React["default"] = window.React;
                         colSpan: this.props.columns.length,
                         onFilter: this.props.onFilter,
                         placeholder: this.props.filterPlaceholder,
-                        value: this.props.currentFilter
+                        value: this.props.currentFilter,
+                        className: this.props.filterClassName
                     }) : null,
                     _react['default'].createElement(
                         'tr',
@@ -726,16 +757,32 @@ window.React["default"] = window.React;
                 // Can't use React.Children.map since that doesn't return a proper array
                 var columns = [];
                 _react['default'].Children.forEach(component.props.children, function (th) {
-                    if (typeof th.props.children === 'string') {
-                        columns.push(th.props.children);
-                    } else if (typeof th.props.column === 'string') {
-                        columns.push({
-                            key: th.props.column,
-                            label: th.props.children,
-                            props: (0, _libFilter_props_from.filterPropsFrom)(th.props)
-                        });
-                    } else {
+                    var column = {};
+                    if (!th) return;
+                    if (typeof th.props !== 'undefined') {
+                        column.props = (0, _libFilter_props_from.filterPropsFrom)(th.props);
+
+                        // use the content as the label & key
+                        if (typeof th.props.children !== 'undefined') {
+                            column.label = th.props.children;
+                            column.key = column.label;
+                        }
+
+                        // the key in the column attribute supersedes the one defined previously
+                        if (typeof th.props.column === 'string') {
+                            column.key = th.props.column;
+
+                            // in case we don't have a label yet
+                            if (typeof column.label === 'undefined') {
+                                column.label = column.key;
+                            }
+                        }
+                    }
+
+                    if (typeof column.key === 'undefined') {
                         throw new TypeError('<th> must have either a "column" property or a string ' + 'child');
+                    } else {
+                        columns.push(column);
                     }
                 });
 
@@ -767,7 +814,7 @@ window.React["default"] = window.React;
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -812,7 +859,7 @@ window.React["default"] = window.React;
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -858,7 +905,7 @@ window.React["default"] = window.React;
                         { className: 'reactable-previous-page',
                             href: pageHref(this.props.currentPage - 1),
                             onClick: this.handlePrevious.bind(this) },
-                        'Previous'
+                        this.props.previousPageLabel || 'Previous'
                     );
                 }
             }
@@ -871,7 +918,7 @@ window.React["default"] = window.React;
                         { className: 'reactable-next-page',
                             href: pageHref(this.props.currentPage + 1),
                             onClick: this.handleNext.bind(this) },
-                        'Next'
+                        this.props.nextPageLabel || 'Next'
                     );
                 }
             }
@@ -976,7 +1023,7 @@ window.React["default"] = window.React;
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+    var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
     function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -991,10 +1038,10 @@ window.React["default"] = window.React;
             _get(Object.getPrototypeOf(Table.prototype), 'constructor', this).call(this, props);
 
             this.state = {
-                currentPage: 0,
+                currentPage: this.props.currentPage ? this.props.currentPage : 0,
                 currentSort: {
                     column: null,
-                    direction: 1
+                    direction: this.props.defaultSortDescending ? -1 : 1
                 },
                 filter: ''
             };
@@ -1099,6 +1146,9 @@ window.React["default"] = window.React;
                                     __reactableMeta: true
                                 });
                                 break;
+
+                            default:
+                                console.warn('The only possible children of <Table> are <Thead>, <Tr>, ' + 'or one <Tfoot>.');
                         }
                     }).bind(this));
                 }
@@ -1119,14 +1169,46 @@ window.React["default"] = window.React;
                 this.tfoot = tfoot;
 
                 this.initializeSorts(props);
+                this.initializeFilters(props);
+            }
+        }, {
+            key: 'initializeFilters',
+            value: function initializeFilters(props) {
+                this._filterable = {};
+                // Transform filterable properties into a more friendly list
+                for (var i in props.filterable) {
+                    var column = props.filterable[i];
+                    var columnName = undefined,
+                        filterFunction = undefined;
+
+                    if (column instanceof Object) {
+                        if (typeof column.column !== 'undefined') {
+                            columnName = column.column;
+                        } else {
+                            console.warn('Filterable column specified without column name');
+                            continue;
+                        }
+
+                        if (typeof column.filterFunction === 'function') {
+                            filterFunction = column.filterFunction;
+                        } else {
+                            filterFunction = 'default';
+                        }
+                    } else {
+                        columnName = column;
+                        filterFunction = 'default';
+                    }
+
+                    this._filterable[columnName] = filterFunction;
+                }
             }
         }, {
             key: 'initializeSorts',
-            value: function initializeSorts() {
+            value: function initializeSorts(props) {
                 this._sortable = {};
                 // Transform sortable properties into a more friendly list
-                for (var i in this.props.sortable) {
-                    var column = this.props.sortable[i];
+                for (var i in props.sortable) {
+                    var column = props.sortable[i];
                     var columnName = undefined,
                         sortFunction = undefined;
 
@@ -1171,15 +1253,17 @@ window.React["default"] = window.React;
                         } else if (column.direction === -1 || column.direction === 'desc') {
                             sortDirection = -1;
                         } else {
-                            console.warn('Invalid default sort specified.  Defaulting to ascending');
-                            sortDirection = 1;
+                            var defaultDirection = this.props.defaultSortDescending ? 'descending' : 'ascending';
+
+                            console.warn('Invalid default sort specified. Defaulting to ' + defaultDirection);
+                            sortDirection = this.props.defaultSortDescending ? -1 : 1;
                         }
                     } else {
-                        sortDirection = 1;
+                        sortDirection = this.props.defaultSortDescending ? -1 : 1;
                     }
                 } else {
                     columnName = column;
-                    sortDirection = 1;
+                    sortDirection = this.props.defaultSortDescending ? -1 : 1;
                 }
 
                 return {
@@ -1196,17 +1280,27 @@ window.React["default"] = window.React;
                 }
             }
         }, {
+            key: 'updateCurrentPage',
+            value: function updateCurrentPage(nextPage) {
+                if (typeof nextPage !== 'undefined' && nextPage !== this.state.currentPage) {
+                    this.setState({ currentPage: nextPage });
+                }
+            }
+        }, {
             key: 'componentWillMount',
             value: function componentWillMount() {
                 this.initialize(this.props);
                 this.sortByCurrentSort();
+                this.filterBy(this.props.filterBy);
             }
         }, {
             key: 'componentWillReceiveProps',
             value: function componentWillReceiveProps(nextProps) {
                 this.initialize(nextProps);
+                this.updateCurrentPage(nextProps.currentPage);
                 this.updateCurrentSort(nextProps.sortBy);
                 this.sortByCurrentSort();
+                this.filterBy(nextProps.filterBy);
             }
         }, {
             key: 'applyFilter',
@@ -1218,12 +1312,21 @@ window.React["default"] = window.React;
                 for (var i = 0; i < children.length; i++) {
                     var data = children[i].props.data;
 
-                    for (var j = 0; j < this.props.filterable.length; j++) {
-                        var filterColumn = this.props.filterable[j];
-
-                        if (typeof data[filterColumn] !== 'undefined' && (0, _libExtract_data_from.extractDataFrom)(data, filterColumn).toString().toLowerCase().indexOf(filter) > -1) {
-                            matchedChildren.push(children[i]);
-                            break;
+                    for (var filterColumn in this._filterable) {
+                        if (typeof data[filterColumn] !== 'undefined') {
+                            // Default filter
+                            if (typeof this._filterable[filterColumn] === 'undefined' || this._filterable[filterColumn] === 'default') {
+                                if ((0, _libExtract_data_from.extractDataFrom)(data, filterColumn).toString().toLowerCase().indexOf(filter) > -1) {
+                                    matchedChildren.push(children[i]);
+                                    break;
+                                }
+                            } else {
+                                // Apply custom filter
+                                if (this._filterable[filterColumn]((0, _libExtract_data_from.extractDataFrom)(data, filterColumn).toString(), filter)) {
+                                    matchedChildren.push(children[i]);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -1284,12 +1387,16 @@ window.React["default"] = window.React;
                     currentSort.direction *= -1;
                 } else {
                     currentSort.column = column;
-                    currentSort.direction = 1;
+                    currentSort.direction = this.props.defaultSortDescending ? -1 : 1;
                 }
 
                 // Set the current sort and pass it to the sort function
                 this.setState({ currentSort: currentSort });
                 this.sortByCurrentSort();
+
+                if (typeof this.props.onSort === 'function') {
+                    this.props.onSort(currentSort);
+                }
             }
         }, {
             key: 'render',
@@ -1299,13 +1406,16 @@ window.React["default"] = window.React;
                 var children = [];
                 var columns = undefined;
                 var userColumnsSpecified = false;
+                var showHeaders = typeof this.props.hideTableHeader === 'undefined';
 
                 var firstChild = null;
 
-                if (this.props.children && this.props.children.length > 0 && this.props.children[0].type === _thead.Thead) {
-                    firstChild = this.props.children[0];
-                } else if (typeof this.props.children !== 'undefined' && this.props.children.type === _thead.Thead) {
-                    firstChild = this.props.children;
+                if (this.props.children) {
+                    if (this.props.children.length > 0 && this.props.children[0] && this.props.children[0].type === _thead.Thead) {
+                        firstChild = this.props.children[0];
+                    } else if (this.props.children.type === _thead.Thead) {
+                        firstChild = this.props.children;
+                    }
                 }
 
                 if (firstChild !== null) {
@@ -1365,7 +1475,7 @@ window.React["default"] = window.React;
 
                 // Determine if we render the filter box
                 var filtering = false;
-                if (this.props.filterable && Array.isArray(this.props.filterable) && this.props.filterable.length > 0) {
+                if (this.props.filterable && Array.isArray(this.props.filterable) && this.props.filterable.length > 0 && !this.props.hideFilterInput) {
                     filtering = true;
                 }
 
@@ -1398,24 +1508,42 @@ window.React["default"] = window.React;
                 // Manually transfer props
                 var props = (0, _libFilter_props_from.filterPropsFrom)(this.props);
 
-                return _react['default'].createElement(
-                    'table',
-                    props,
-                    columns && columns.length > 0 ? _react['default'].createElement(_thead.Thead, { columns: columns,
+                var noDataText = this.props.noDataText ? _react['default'].createElement(
+                    'tr',
+                    { className: 'reactable-no-data' },
+                    _react['default'].createElement(
+                        'td',
+                        { colSpan: columns.length },
+                        this.props.noDataText
+                    )
+                ) : null;
+
+                var tableHeader = null;
+                if (columns && columns.length > 0 && showHeaders) {
+                    tableHeader = _react['default'].createElement(_thead.Thead, { columns: columns,
                         filtering: filtering,
                         onFilter: function (filter) {
                             _this.setState({ filter: filter });
+                            if (_this.props.onFilter) {
+                                _this.props.onFilter(filter);
+                            }
                         },
                         filterPlaceholder: this.props.filterPlaceholder,
+                        filterClassName: this.props.filterClassName,
                         currentFilter: this.state.filter,
                         sort: this.state.currentSort,
                         sortableColumns: this._sortable,
                         onSort: this.onSort.bind(this),
-                        key: 'thead' }) : null,
+                        key: 'thead' });
+                }
+                return _react['default'].createElement(
+                    'table',
+                    props,
+                    tableHeader,
                     _react['default'].createElement(
                         'tbody',
                         { className: 'reactable-data', key: 'tbody' },
-                        currentChildren
+                        currentChildren.length > 0 ? currentChildren : noDataText
                     ),
                     pagination === true ? _react['default'].createElement(_paginator.Paginator, { colSpan: columns.length,
                         pageButtonLimit: pageButtonLimit,
@@ -1423,7 +1551,12 @@ window.React["default"] = window.React;
                         currentPage: currentPage,
                         onPageChange: function (page) {
                             _this.setState({ currentPage: page });
+                            if (_this.props.onPageChange) {
+                                _this.props.onPageChange(page);
+                            }
                         },
+                        previousPageLabel: this.props.previousPageLabel,
+                        nextPageLabel: this.props.nextPageLabel,
                         key: 'paginator' }) : null,
                     this.tfoot
                 );
@@ -1438,7 +1571,10 @@ window.React["default"] = window.React;
     Table.defaultProps = {
         sortBy: false,
         defaultSort: false,
-        itemsPerPage: 0
+        defaultSortDescending: false,
+        itemsPerPage: 0,
+        filterBy: '',
+        hideFilterInput: false
     };
 });
 

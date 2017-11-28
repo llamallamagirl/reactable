@@ -1,14 +1,15 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 export class FiltererInput extends React.Component {
     onChange() {
-        this.props.onFilter(React.findDOMNode(this).value);
+        this.props.onFilter(ReactDOM.findDOMNode(this).value);
     }
 
     render() {
         return (
             <input type="text"
-                className="reactable-filter-input"
+                className={this.props.className}
                 placeholder={this.props.placeholder}
                 value={this.props.value}
                 onKeyUp={this.onChange.bind(this)}
@@ -28,7 +29,8 @@ export class Filterer extends React.Component {
                 <td colSpan={this.props.colSpan}>
                     <FiltererInput onFilter={this.props.onFilter}
                         value={this.props.value}
-                        placeholder={this.props.placeholder}/>
+                        placeholder={this.props.placeholder}
+                        className={this.props.className ? 'reactable-filter-input ' + this.props.className : 'reactable-filter-input'} />
                 </td>
             </tr>
         );

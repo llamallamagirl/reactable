@@ -1,4 +1,7 @@
-# Reactable [![Build Status](https://travis-ci.org/glittershark/reactable.svg?branch=master)](https://travis-ci.org/glittershark/reactable)
+# Reactable
+
+[![Build Status](https://travis-ci.org/glittershark/reactable.svg?branch=master)](https://travis-ci.org/glittershark/reactable)
+[![Code Climate](https://codeclimate.com/github/glittershark/reactable/badges/gpa.svg)](https://codeclimate.com/github/glittershark/reactable)
 
 Fast, flexible, and simple data tables in React.
 
@@ -15,11 +18,8 @@ unstable and there might be hidden bugs lurking around any corner. I'll try to
 tag any releases with breaking changes, however, and the more people who use
 this the faster we can get to 1.0!
 
-**Note:** Version [0.9.8][0.9.8] is the last version that supports React 0.11 -
-as of version 0.10.0 Reactable will only continue to support React
-0.12 and higher.
-
-[0.9.8]: https://github.com/glittershark/reactable/tree/0.9.8
+**Note:** As of version 0.12.0 Reactable will only continue to support React
+0.14 and higher.
 
 ## Table of Contents
 
@@ -33,6 +33,8 @@ as of version 0.10.0 Reactable will only continue to support React
   - [Pagination](#pagination)
   - [Sorting](#sorting)
   - [Filtering](#filtering)
+  - [Empty Data Sets](#empty-data-sets)
+  - [Events](#events)
 
 ## Installation
 
@@ -40,6 +42,12 @@ as of version 0.10.0 Reactable will only continue to support React
 
 ```sh
 bower install [--save] reactable
+```
+
+### Using NPM
+
+```sh
+npm install [--save] reactable
 ```
 
 Or, you can just download the raw file
@@ -53,8 +61,8 @@ Reactable also exposes a set of CommonJS modules for piece-by-piece use with
 Node, Webpack, Browserify, etc. These modules are located in the [`lib` folder
 at the root of this repositiory][lib-folder].
 
-Keep in mind that Reactable depends on the latest version of React (0.12),
-**with addons**. That can be downloaded [here][download]
+Keep in mind that Reactable depends on the latest version of React (0.14), which
+can be downloaded [here][download]
 
 [build-file]: https://github.com/glittershark/reactable/raw/master/build/reactable.js
 [download]: http://facebook.github.io/react/downloads.html
@@ -66,7 +74,7 @@ The simplest example:
 
 ```jsx
 var Table = Reactable.Table;
-React.renderComponent(
+ReactDOM.render(
     <Table className="table" data={[
         { Name: 'Griffin Smith', Age: 18 },
         { Age: 23,  Name: 'Lee Salminen' },
@@ -94,7 +102,7 @@ and is useful if you want to specify per-row attributes such as classes, like so
 var Table = Reactable.Table,
     Tr = Reactable.Tr;
 
-React.renderComponent(
+ReactDOM.render(
     <Table className="table" data={[
         { name: 'Row one', content: 'These are regular data rows' },
         { name: 'Row two', content: 'They work like above' },
@@ -121,7 +129,7 @@ var Table = Reactable.Table,
     Tr = Reactable.Tr,
     Td = Reactable.Td;
 
-React.renderComponent(
+ReactDOM.render(
     <Table className="table" id="table">
         <Tr>
             <Td column="Name" data="Griffin Smith">
@@ -167,7 +175,7 @@ var Table = Reactable.Table,
     Tr = Reactable.Tr,
     Td = Reactable.Td;
 
-React.renderComponent(
+ReactDOM.render(
     <Table className="table" id="table">
         <Thead>
           <Th column="name">
@@ -216,7 +224,7 @@ so:
 var Table = Reactable.Table,
     unsafe = Reactable.unsafe;
 
-React.renderComponent(
+ReactDOM.render(
     <Table className="table" id="table" data={[
         {
             'Name': unsafe('<b>Griffin Smith</b>'),
@@ -252,6 +260,9 @@ For example:
     { Age: '23',  Name: 'End of this Page', Position: 'CEO' },
 ]} itemsPerPage={4} pageButtonLimit={5} />
 ```
+
+You can also change the default text on the buttons by including the
+`previousPageLabel` and `nextPageLabel` props.
 
 ### Sorting
 
@@ -328,7 +339,7 @@ var Table = Reactable.Table,
     Tr = Reactable.Tr,
     Td = Reactable.Td;
 
-React.renderComponent(
+ReactDOM.render(
     <Table className="table" id="table" sortable={true}>
         <Tr>
             <Td column="Name" value="Griffin Smith">
@@ -342,6 +353,24 @@ React.renderComponent(
     </Table>,
     document.getElementById('table')
 );
+```
+
+There is also an boolean `defaultSortDescending` option to default the sorting
+of a column to descending when clicked:
+
+```jsx
+
+<Table className="table" id="table" data={[
+    { Name: 'Lee Salminen', Age: '23', Position: 'Programmer'},
+    { Name: 'Griffin Smith', Age: '18', Position: 'Engineer'},
+    { Name: 'Ian Zhang', Age: '28', Position: 'Developer'}
+]}
+sortable={[
+    'Age',
+    'Position'
+]}
+defaultSort={{column: 'Age', direction: 'desc'}}
+defaultSortDescending
 ```
 
 ### Filtering
@@ -368,7 +397,7 @@ There is also a `filterBy()` function on the component itself which takes a
 single string and applies that as the filtered value. It can be used like so:
 
 ```jsx
-var table = React.renderComponent(
+var table = ReactDOM.render(
   <Table className="table" id="table" data={[
       {'State': 'New York', 'Description': 'this is some text', 'Tag': 'new'},
       {'State': 'New Mexico', 'Description': 'lorem ipsum', 'Tag': 'old'},
@@ -383,5 +412,116 @@ var table = React.renderComponent(
 table.filterBy('new');
 ```
 
-This can be useful if you want to roll your own filtering input field outside of
-Reactable.
+You can also pass in a `filterBy` prop to control the filtering outside of the
+`Table` component:
+
+```jsx
+var table = ReactDOM.render(
+  <Table className="table" id="table" data={[
+      {'State': 'New York', 'Description': 'this is some text', 'Tag': 'new'},
+      {'State': 'New Mexico', 'Description': 'lorem ipsum', 'Tag': 'old'},
+      {'State': 'Colorado',
+       'Description': 'new description that shouldn\'t match filter',
+       'Tag': 'old'},
+      {'State': 'Alaska', 'Description': 'bacon', 'Tag': 'renewed'},
+  ]} filterable={['State', 'Tag']}
+  filterBy="new" />,
+  document.getElementById('table')
+);
+```
+
+If you are using your own input field to control the `filterBy` prop, you can
+hide the build-in filter input field with the `hideFilterInput` prop:
+
+```jsx
+var table = ReactDOM.render(
+  <Table className="table" id="table" data={[
+      {'State': 'New York', 'Description': 'this is some text', 'Tag': 'new'},
+      {'State': 'New Mexico', 'Description': 'lorem ipsum', 'Tag': 'old'},
+      {'State': 'Colorado',
+       'Description': 'new description that shouldn\'t match filter',
+       'Tag': 'old'},
+      {'State': 'Alaska', 'Description': 'bacon', 'Tag': 'renewed'},
+  ]} filterable={['State', 'Tag']}
+  filterBy="new"
+  hideFilterInput />,
+  document.getElementById('table')
+);
+```
+
+These can be useful if you want to roll your own filtering input field
+outside of Reactable.
+
+You can also provide your own custom filtering functions:
+
+```jsx
+<Table className="table" id="table" data={[
+    {'State': 'New York', 'Description': 'this is some text', 'Tag': 'new'},
+    {'State': 'New Mexico', 'Description': 'lorem ipsum', 'Tag': 'old'},
+    {'State': 'Colorado',
+     'Description': 'new description that shouldn\'t match filter',
+     'Tag': 'old'},
+    {'State': 'Alaska', 'Description': 'bacon', 'Tag': 'renewed'},
+]}
+filterable={[
+    {
+        column: 'State',
+        filterFunction: function(contents, filter) {
+            // case-sensitive filtering
+            return (contents.indexOf(filter) > -1);
+        }
+    },
+    'Tag'
+]} />
+```
+
+Your filter function must return a boolean. Refraining from specifying a custom
+filter function will default to case-insensitive filtering.
+
+### Empty Data Sets
+
+If the table is initialized without any `<Tr>`s or with an empty array for
+`data`, you can display text in the body of the table by passing a string
+for the optional `noDataText` prop:
+
+```jsx
+var table = ReactDOM.render(
+  <Table
+    className="table"
+    id="table" data={[]}
+    noDataText="No matching records found." />,
+  document.getElementById('table')
+);
+```
+
+### Events
+
+You can pass functions to the following props of `<Reactable.Table>` to provide
+event handlers.
+
+#### onSort
+
+Called when the sorting in the table changes.
+
+This handler will be passed an object that contains the column name that is
+being sorted by, and the direction it is being sorted:
+
+```js
+{
+  column: 'Name',
+  direction: -1
+}
+```
+
+#### onFilter
+
+Called every time the filtering changes.
+
+This handler will be passed a string containing the text that's being used for
+filtering.
+
+#### onPageChange
+
+Called every time the page changes.
+
+This handler will be passed a number representing the current page, zero based.
