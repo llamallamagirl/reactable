@@ -494,17 +494,17 @@ window.ReactDOM["default"] = window.ReactDOM;
 
 (function (global, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['exports', 'react', './td', './lib/to_array', './lib/filter_props_from'], factory);
+        define(['exports', 'react', 'react-dom-factories', './td', './lib/to_array', './lib/filter_props_from'], factory);
     } else if (typeof exports !== 'undefined') {
-        factory(exports, require('react'), require('./td'), require('./lib/to_array'), require('./lib/filter_props_from'));
+        factory(exports, require('react'), require('react-dom-factories'), require('./td'), require('./lib/to_array'), require('./lib/filter_props_from'));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.React, global.td, global.to_array, global.filter_props_from);
+        factory(mod.exports, global.React, global.DOM, global.td, global.to_array, global.filter_props_from);
         global.tr = mod.exports;
     }
-})(this, function (exports, _react, _td, _libTo_array, _libFilter_props_from) {
+})(this, function (exports, _react, _reactDomFactories, _td, _libTo_array, _libFilter_props_from) {
     'use strict';
 
     var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -566,7 +566,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                 // Manually transfer props
                 var props = (0, _libFilter_props_from.filterPropsFrom)(this.props);
 
-                return _react['default'].DOM.tr(props, children);
+                return _reactDomFactories['default'].tr(props, children);
             }
         }]);
 
