@@ -1100,6 +1100,9 @@ window.ReactDOM["default"] = window.ReactDOM;
                             reactableDescendant = child;
                         } else {
                             reactableDescendant = new child.type(child.props, child._context).render();
+                            if (Array.isArray(reactableDescendant)) {
+                                reactableDescendant = reactableDescendant.pop();
+                            }
                             test = true;
                         }
 
@@ -1148,7 +1151,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                                 break;
 
                             default:
-                                console.warn('The only possible children of <Table> are <Thead>, <Tr>, ' + 'or one <Tfoot>.');
+                                break;
                         }
                     }).bind(this));
                 }

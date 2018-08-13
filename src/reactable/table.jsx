@@ -69,6 +69,7 @@ export class Table extends React.Component {
                     reactableDescendant = child
                 } else {
                     reactableDescendant = (new child.type(child.props, child._context)).render()
+                    if (Array.isArray(reactableDescendant)) { reactableDescendant = reactableDescendant.pop(); }
                     test = true
                 }
 
@@ -123,9 +124,7 @@ export class Table extends React.Component {
                         });
                     break;
 
-                    default:
-                        console.warn ('The only possible children of <Table> are <Thead>, <Tr>, ' +
-                                      'or one <Tfoot>.');
+                    default: break;
                 }
             }.bind(this));
         }
