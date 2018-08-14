@@ -28,7 +28,10 @@ module.exports = function(grunt) {
             }
         },
         babel: {
-            options: { sourceRoot: 'src' },
+            options: {
+                sourceMap: true,
+                sourceRoot: 'src'
+            },
             umd: {
                 files: {
                     'tmp/reactable/lib/to_array.js': 'src/reactable/lib/to_array.jsx',
@@ -51,7 +54,6 @@ module.exports = function(grunt) {
 
                     'build/tests/reactable_test.js': 'tests/reactable_test.jsx'
                 },
-                options: { modules: 'umdStrict' }
             },
             common: {
                 files: {
@@ -75,7 +77,6 @@ module.exports = function(grunt) {
 
                     'build/tests/reactable_test.js': 'tests/reactable_test.jsx'
                 },
-                options: { modules: 'common' }
             }
         },
         concat: {
@@ -128,7 +129,7 @@ module.exports = function(grunt) {
     grunt.registerTask('ci', ['testOnce', 'markdownlint:readme'])
 
     grunt.registerTask('buildBrowser', ['babel:umd', 'concat', 'file_append:umdHack'])
-    grunt.registerTask('build', ['babel:common', 'buildBrowser']);
+    grunt.registerTask('build', ['babel:common']);
     grunt.registerTask('default', ['build', 'watch:build']);
 };
 

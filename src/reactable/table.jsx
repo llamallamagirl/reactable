@@ -55,79 +55,68 @@ export class Table extends React.Component {
     parseChildData(props) {
         let data = [], tfoot;
 
-        // Transform any children back to a data array
-        if (typeof(props.children) !== 'undefined') {
-            React.Children.forEach(props.children, function(child) {
-                if (typeof(child) === 'undefined' || child === null) {
-                    return;
-                }
+        const children = React.Children.map(props.children, function(child) {
+            if (typeof(child) === 'undefined' || child === null) { return; }
+            if ([Tfoot, Thead, Tr].indexOf(child.type) >= 0) {
+                return child
+            } else {
+                return (new child.type(child.props, child._context)).render()
+            }
+        });
 
-                let reactableDescendant;
-                let test;
+        React.Children.forEach(children, function(child) {
+            switch (child.type) {
+                case Tfoot:
+                    if (typeof(tfoot) !== 'undefined') {
+                        console.warn ('You can only have one <Tfoot>, but more than one was specified.' +
+                                      'Ignoring all but the last one');
+                    }
+                    tfoot = child;
+                break;
+                case Tr:
+                    let childData = child.props.data || {};
 
-                if ([Tfoot, Thead, Tr].indexOf(child.type) >= 0) {
-                    reactableDescendant = child
-                } else {
-                    reactableDescendant = (new child.type(child.props, child._context)).render()
-                    if (Array.isArray(reactableDescendant)) { reactableDescendant = reactableDescendant.pop(); }
-                    test = true
-                }
+                    React.Children.forEach(child.props.children, function(descendant) {
+                        console.log(descendant);
+                        if (
+                            typeof(descendant) !== 'object' ||
+                            descendant == null
+                        ) {
+                            return;
+                        } else if (typeof(descendant.props.column) !== 'undefined') {
+                            let value;
 
-                switch (reactableDescendant.type) {
-                    case Tfoot:
-                        if (typeof(tfoot) !== 'undefined') {
-                            console.warn ('You can only have one <Tfoot>, but more than one was specified.' +
-                                          'Ignoring all but the last one');
-                        }
-                        tfoot = child;
-                    break;
-                    case Tr:
-                        let childData = reactableDescendant.props.data || {};
-
-                        React.Children.forEach(reactableDescendant.props.children, function(descendant) {
-                            // TODO
-                            /* if (descendant.type.ConvenienceConstructor === Td) { */
-                            if (
-                                typeof(descendant) !== 'object' ||
-                                descendant == null
-                            ) {
-                                return;
-                            } else if (typeof(descendant.props.column) !== 'undefined') {
-                                let value;
-
-                                if (typeof(descendant.props.data) !== 'undefined') {
-                                    value = descendant.props.data;
-                                } else if (typeof(descendant.props.children) !== 'undefined') {
-                                    value = descendant.props.children;
-                                } else {
-                                    console.warn('Td specified without ' +
-                                                 'a `data` property or children, ' +
-                                                 'ignoring');
-                                    return;
-                                }
-
-                                childData[descendant.props.column] = {
-                                    value: value,
-                                    props: filterPropsFrom(descendant.props),
-                                    __reactableMeta: true
-                                };
+                            if (typeof(descendant.props.data) !== 'undefined') {
+                                value = descendant.props.data;
+                            } else if (typeof(descendant.props.children) !== 'undefined') {
+                                value = descendant.props.children;
                             } else {
-                                console.warn('exports.Td specified without a ' +
-                                             '`column` property, ignoring');
+                                console.warn('Td specified without ' +
+                                             'a `data` property or children, ' +
+                                             'ignoring');
+                                return;
                             }
-                        });
 
-                        data.push({
-                            data: childData,
-                            props: filterPropsFrom(reactableDescendant.props),
-                            __reactableMeta: true
-                        });
-                    break;
+                            childData[descendant.props.column] = {
+                                value: value,
+                                props: filterPropsFrom(descendant.props),
+                                __reactableMeta: true
+                            };
+                        } else {
+                            console.warn('exports.Td specified without a `column` property, ignoring');
+                        }
+                    });
 
-                    default: break;
-                }
-            }.bind(this));
-        }
+                    data.push({
+                        data: childData,
+                        props: filterPropsFrom(child.props),
+                        __reactableMeta: true
+                    });
+                break;
+
+                default: break;
+            }
+        }.bind(this));
 
         return { data, tfoot };
     }

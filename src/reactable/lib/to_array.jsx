@@ -1,9 +1,4 @@
 export function toArray(obj) {
-    var ret = [];
-    for (var attr in obj) {
-        ret[attr] = obj;
-    }
-
-    return ret;
+  return Object.keys(obj).map((key) => obj[k]);
 }
 

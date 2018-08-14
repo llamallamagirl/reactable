@@ -13,8 +13,6 @@ export class Tr extends React.Component {
                 this.props.columns &&
                     typeof this.props.columns.map === 'function'
         ) {
-            if (typeof(children.concat) === 'undefined') { console.log(children); }
-
             children = children.concat(this.props.columns.map(function({ props = {}, ...column}, i) {
                 if (this.props.data.hasOwnProperty(column.key)) {
                     var value = this.props.data[column.key];
@@ -29,8 +27,6 @@ export class Tr extends React.Component {
                     }
 
                     return <Td column={column} key={column.key} {...props}>{value}</Td>;
-                } else {
-                    return <Td column={column} key={column.key} />;
                 }
             }.bind(this)));
         }
