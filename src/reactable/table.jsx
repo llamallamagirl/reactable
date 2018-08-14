@@ -77,7 +77,6 @@ export class Table extends React.Component {
                     let childData = child.props.data || {};
 
                     React.Children.forEach(child.props.children, function(descendant) {
-                        console.log(descendant);
                         if (
                             typeof(descendant) !== 'object' ||
                             descendant == null
