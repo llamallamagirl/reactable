@@ -42,8 +42,6 @@ if (!Array.prototype.find) {
     });
 }
 
-const Reactable = { Table, Tr, Td, Th, Tfoot, Thead, Sort, unsafe };
-
-export default Reactable;
+export { Table, Tr, Td, Th, Tfoot, Thead, Sort, unsafe };
 
 if(typeof(window) !== 'undefined') { window.Reactable = Reactable; }
