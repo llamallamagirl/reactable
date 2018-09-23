@@ -3,7 +3,7 @@ import { Th } from './th';
 import { Filterer } from './filterer';
 import { filterPropsFrom } from './lib/filter_props_from';
 
-export class Thead extends React.Component {
+export default class Thead extends React.Component {
     static getColumns(component) {
         // Can't use React.Children.map since that doesn't return a proper array
         let columns = [];

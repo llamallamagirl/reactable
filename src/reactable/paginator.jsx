@@ -4,7 +4,7 @@ function pageHref(num) {
     return `#page-${num + 1}`
 }
 
-export class Paginator extends React.Component {
+export default class Paginator extends React.Component {
     handlePrevious(e) {
         e.preventDefault()
         this.props.onPageChange(this.props.currentPage - 1)

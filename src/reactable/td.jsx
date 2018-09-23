@@ -4,7 +4,7 @@ import { stringable } from './lib/stringable';
 import { isUnsafe } from './unsafe';
 import { filterPropsFrom } from './lib/filter_props_from';
 
-export class Td extends React.Component {
+export default class Td extends React.Component {
     stringifyIfNotReactComponent(object) {
       if(!isReactComponent(object) && stringable(object) && typeof(object) !== 'undefined') {
         return object.toString()

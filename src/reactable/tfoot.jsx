@@ -1,6 +1,6 @@
 import React from 'react';
 
-export class Tfoot extends React.Component {
+export default class Tfoot extends React.Component {
     render() {
         return <tfoot {...this.props} />;
     }

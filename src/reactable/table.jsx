@@ -8,7 +8,7 @@ import { Tr } from './tr';
 import { Tfoot } from './tfoot';
 import { Paginator } from './paginator';
 
-export class Table extends React.Component {
+export default class Table extends React.Component {
     constructor(props) {
         super(props);
 

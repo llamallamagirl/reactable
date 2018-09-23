@@ -4,7 +4,7 @@ import { Td } from './td';
 import { toArray } from './lib/to_array';
 import { filterPropsFrom } from './lib/filter_props_from';
 
-export class Tr extends React.Component {
+export default class Tr extends React.Component {
     render() {
         var children = toArray(React.Children.children(this.props.children));
 
