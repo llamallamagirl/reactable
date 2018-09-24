@@ -42,4 +42,14 @@ if (!Array.prototype.find) {
     });
 }
 
-export default { Table, Tr, Td, Th, Tfoot, Thead, Sort, unsafe };
+module.exports = {
+    Table: Table,
+    Tr: Tr,
+    Td: Td,
+    Th: Th,
+    Tfoot: Tfoot,
+    Thead: Thead,
+    Sort: Sort,
+    unsafe: unsafe
+};
+
