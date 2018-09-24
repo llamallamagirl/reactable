@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class FiltererInput extends React.Component {
+export class FiltererInput extends React.Component {
     onChange() {
         this.props.onFilter(ReactDOM.findDOMNode(this).value);
     }
@@ -18,7 +18,7 @@ export default class FiltererInput extends React.Component {
     }
 };
 
-export class Filterer extends React.Component {
+export default class Filterer extends React.Component {
     render() {
         if (typeof this.props.colSpan === 'undefined') {
             throw new TypeError('Must pass a colSpan argument to Filterer');

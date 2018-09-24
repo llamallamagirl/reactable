@@ -1,12 +1,12 @@
 import React from 'react';
-import { filterPropsFrom } from './lib/filter_props_from';
-import { extractDataFrom } from './lib/extract_data_from';
+import filterPropsFrom from './lib/filter_props_from';
+import extractDataFrom from './lib/extract_data_from';
 import { isUnsafe } from './unsafe';
-import { Thead } from './thead';
-import { Th } from './th';
-import { Tr } from './tr';
-import { Tfoot } from './tfoot';
-import { Paginator } from './paginator';
+import Thead from './thead';
+import Th from './th';
+import Tr from './tr';
+import Tfoot from './tfoot';
+import Paginator from './paginator';
 
 export default class Table extends React.Component {
     constructor(props) {

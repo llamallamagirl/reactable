@@ -8,7 +8,7 @@ class Unsafe {
     }
 }
 
-export function unsafe(str) {
+export default function unsafe(str) {
     return new Unsafe(str);
 };
 

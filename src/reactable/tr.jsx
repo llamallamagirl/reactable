@@ -1,8 +1,8 @@
 import React from 'react';
 import DOM from 'react-dom-factories';
-import { Td } from './td';
-import { toArray } from './lib/to_array';
-import { filterPropsFrom } from './lib/filter_props_from';
+import Td from './td';
+import toArray from './lib/to_array';
+import filterPropsFrom from './lib/filter_props_from';
 
 export default class Tr extends React.Component {
     render() {

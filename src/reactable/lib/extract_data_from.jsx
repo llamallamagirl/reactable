@@ -1,6 +1,6 @@
-import { stringable } from './stringable';
+import stringable from './stringable';
 
-export function extractDataFrom(key, column) {
+export default function extractDataFrom(key, column) {
     var value;
     if (
         typeof(key) !== 'undefined' &&

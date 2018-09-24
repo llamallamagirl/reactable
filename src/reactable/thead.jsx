@@ -1,7 +1,7 @@
 import React from 'react';
-import { Th } from './th';
-import { Filterer } from './filterer';
-import { filterPropsFrom } from './lib/filter_props_from';
+import Th from './th';
+import Filterer from './filterer';
+import filterPropsFrom from './lib/filter_props_from';
 
 export default class Thead extends React.Component {
     static getColumns(component) {

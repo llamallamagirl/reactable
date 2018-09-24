@@ -1,8 +1,8 @@
 import React from 'react';
-import { isReactComponent } from './lib/is_react_component';
-import { stringable } from './lib/stringable';
+import isReactComponent from './lib/is_react_component';
+import stringable from './lib/stringable';
 import { isUnsafe } from './unsafe';
-import { filterPropsFrom } from './lib/filter_props_from';
+import filterPropsFrom from './lib/filter_props_from';
 
 export default class Td extends React.Component {
     stringifyIfNotReactComponent(object) {
