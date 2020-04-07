@@ -22,9 +22,6 @@ export default class Td extends React.Component {
                 }
             }
         }
-        // handleClick aliases onClick event
-        mergedProps.onClick = this.props.handleClick;
-
         var stringifiedChildProps;
 
         if (typeof(this.props.data) === 'undefined') {

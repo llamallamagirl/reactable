@@ -240,13 +240,13 @@ export default class Table extends React.Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.initialize(this.props);
         this.sortByCurrentSort();
         this.filterBy(this.props.filterBy);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.initialize(nextProps);
         this.updateCurrentPage(nextProps.currentPage)
         this.updateCurrentSort(nextProps.sortBy);
@@ -355,9 +355,7 @@ export default class Table extends React.Component {
         let columns;
         let userColumnsSpecified = false;
         let showHeaders = typeof this.props.hideTableHeader === 'undefined';
-
         let firstChild = null;
-
 
         if (this.props.children) {
             if (
